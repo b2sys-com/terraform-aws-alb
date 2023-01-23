@@ -421,7 +421,8 @@ resource "aws_lb_listener_rule" "https_listener_rule" {
 resource "aws_lb_listener_rule" "http_tcp_listener_rule" {
   count = local.create_lb ? length(var.http_tcp_listener_rules) : 0
 
-  listener_arn = aws_lb_listener.frontend_http_tcp[lookup(var.http_tcp_listener_rules[count.index], "http_tcp_listener_index", count.index)].arn
+  //listener_arn = aws_lb_listener.frontend_http_tcp[lookup(var.http_tcp_listener_rules[count.index], "http_tcp_listener_index", count.index)].arn
+  listener_arn = lookup(var.http_tcp_listener_rules[count.index], "http_tcp_listener_index", count.index).arn
   priority     = lookup(var.http_tcp_listener_rules[count.index], "priority", null)
 
   # redirect actions
