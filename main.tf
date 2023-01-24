@@ -421,8 +421,7 @@ resource "aws_lb_listener_rule" "https_listener_rule" {
 resource "aws_lb_listener_rule" "http_tcp_listener_rule" {
   count = local.create_lb ? length(var.http_tcp_listener_rules) : 0
 
-  //listener_arn = aws_lb_listener.frontend_http_tcp[lookup(var.http_tcp_listener_rules[count.index], "http_tcp_listener_index", count.index)].arn
-  listener_arn = lookup(var.http_tcp_listener_rules[count.index], "http_tcp_listener_index", count.index).arn
+  listener_arn = aws_lb_listener.frontend_http_tcp[lookup(var.http_tcp_listener_rules[count.index], "http_tcp_listener_index", count.index)].arn
   priority     = lookup(var.http_tcp_listener_rules[count.index], "priority", null)
 
   # redirect actions
@@ -616,7 +615,7 @@ resource "aws_lb_listener_rule" "http_tcp_listener_rule" {
   )
 }
 
-/*resource "aws_lb_listener" "frontend_http_tcp" {
+resource "aws_lb_listener" "frontend_http_tcp" {
   count = local.create_lb ? length(var.http_tcp_listeners) : 0
 
   load_balancer_arn = aws_lb.this[0].arn
@@ -662,7 +661,7 @@ resource "aws_lb_listener_rule" "http_tcp_listener_rule" {
     var.http_tcp_listeners_tags,
     lookup(var.http_tcp_listeners[count.index], "tags", {}),
   )
-}*/
+}
 
 resource "aws_lb_listener" "frontend_https" {
   count = local.create_lb ? length(var.https_listeners) : 0
