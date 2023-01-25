@@ -3,7 +3,7 @@ locals {
 }
 
 resource "aws_lb" "this" {
-  //count = local.create_lb ? 1 : 0
+  count = local.create_lb ? 1 : 0
 
   name        = var.name
   name_prefix = var.name_prefix
@@ -62,7 +62,7 @@ resource "aws_lb" "this" {
 resource "aws_lb_target_group" "main" {
   count = local.create_lb ? length(var.target_groups) : 0
 
-  name        = lookup(var.target_groups[count.index], "tg_name", null)
+  name        = lookup(var.target_groups[count.index], "name", null)
   name_prefix = lookup(var.target_groups[count.index], "name_prefix", null)
 
   vpc_id           = var.vpc_id
@@ -275,7 +275,7 @@ resource "aws_lb_listener_rule" "https_listener_rule" {
     ]
 
     content {
-      type             = action_rule.value["type"]
+      type             = action.value["type"]
       target_group_arn = aws_lb_target_group.main[lookup(action.value, "target_group_index", count.index)].id
     }
   }
@@ -618,9 +618,7 @@ resource "aws_lb_listener_rule" "http_tcp_listener_rule" {
 resource "aws_lb_listener" "frontend_http_tcp" {
   count = local.create_lb ? length(var.http_tcp_listeners) : 0
 
-  //load_balancer_arn = aws_lb.this[0].arn
-  load_balancer_arn = aws_lb.this.arn
-
+  load_balancer_arn = aws_lb.this[0].arn
 
   port     = var.http_tcp_listeners[count.index]["port"]
   protocol = var.http_tcp_listeners[count.index]["protocol"]
@@ -668,8 +666,7 @@ resource "aws_lb_listener" "frontend_http_tcp" {
 resource "aws_lb_listener" "frontend_https" {
   count = local.create_lb ? length(var.https_listeners) : 0
 
-  //load_balancer_arn = aws_lb.this[0].arn
-  load_balancer_arn = aws_lb.this.arn
+  load_balancer_arn = aws_lb.this[0].arn
 
   port            = var.https_listeners[count.index]["port"]
   protocol        = lookup(var.https_listeners[count.index], "protocol", "HTTPS")
