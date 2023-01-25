@@ -275,8 +275,8 @@ resource "aws_lb_listener_rule" "https_listener_rule" {
     ]
 
     content {
-      type             = action.value["type"]
-      target_group_arn = aws_lb_target_group.main[lookup(action.value, "target_group_index", count.index)].id
+      type             = action_rule.value["type"]
+      target_group_arn = aws_lb_target_group.main[lookup(action_rule.value, "target_group_index", count.index)].id
     }
   }
 
