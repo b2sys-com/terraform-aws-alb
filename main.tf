@@ -3,7 +3,7 @@ locals {
 }
 
 resource "aws_lb" "this" {
-  count = local.create_lb ? 1 : 0
+  //count = local.create_lb ? 1 : 0
 
   name        = var.name
   name_prefix = var.name_prefix
