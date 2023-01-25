@@ -668,7 +668,8 @@ resource "aws_lb_listener" "frontend_http_tcp" {
 resource "aws_lb_listener" "frontend_https" {
   count = local.create_lb ? length(var.https_listeners) : 0
 
-  load_balancer_arn = aws_lb.this[0].arn
+  //load_balancer_arn = aws_lb.this[0].arn
+  load_balancer_arn = aws_lb.this.arn
 
   port            = var.https_listeners[count.index]["port"]
   protocol        = lookup(var.https_listeners[count.index], "protocol", "HTTPS")
