@@ -489,7 +489,7 @@ resource "aws_lb_listener_rule" "http_tcp_listener_rule" {
       type = "forward"
       forward {
         dynamic "target_group" {
-          //for_each = action.value["target_groups"]
+          for_each = action.value["target_groups"]
 
           content {
             arn    = aws_lb_target_group.main[target_group.value["target_group_index"]].id
